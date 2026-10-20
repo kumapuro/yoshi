@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>勉強タイマー</title>
+<style>
+    body {font-family: sans-serif; text-align: center;background:#f4f6fb; color: #333;margin-top:8vh;}
+    #display{font-size: 5rem;font-weight: bold; margin:1rem 0; font-variant-numeric:tabular-nums;}
+    input{width: 4rem;font-size: 1.5rem;text-align:center;}
+    button{font-size: 1.2rem;padding: .5rem 1.2rem;margin: .3rem;border:none;border-radius: 8px;background: #4a6cf7;color: #fff;cursor:pointer;}
+        button.sub{background: #888;}
+        #startImg{max-width: 80%;max-height: 30vh;}
+        #finish{display: none;}
+        #finish h2{font-size: 2.5rem;color: #e0453a;}
+        #finish img{max-width:80%; max-height:40vh;}
+</style>
+</head>
+<body>
+    <h1>勉強タイマー</h1>
+    <img id="startImg" src="start.png" alt="スタート画像">
+    <div>
+        <input id="min" type="number" min="0"value="25">分
+        <input id="sec" type="number" min="0" max="59"value="0">秒
+    </div>
+    <div id="display">25:00</div>
+    <button id="start">スタート</button>
+    <button id="reset" class="sub">リセット</button>
+    <div id="finish">
+        <h2>終了</h2>
+        <img src="gazou.png" alt="終了画像">
+    </div>
+
+<script>
+    const $ =id=> document.getElementById(id);
+    let timer =null, remain=0;
+
+    const show =()=>{
+        const m=String(Math.floor(remain/60)).padStart(2,"0");
+        const s=String(remain % 60).padStart(2,"0");
+        $("display").textContent=`${m}:${s}`;
+        };  
+
+        $("start").onclick=()=>{
+        clearInterval(timer);
+        $("finish").style.display="none";
+        remain=Number($("min").value)*60+Number($("sec").value);
+        show();
+        timer=setInterval(()=>{
+            remain--;
+            show();
+            if(remain<=0){
+                clearInterval(timer);
+                $("finish").style.display="block";
+            }
+        },1000);
+        };
+
+        $("reset").onclick=()=>{
+            clearInterval(timer);
+            $("finish").style.display="none";
+            remain=Number($("min").value)*60+Number($("sec").value);
+            show();
+        };
+</script>
+ </body>
+</html>
